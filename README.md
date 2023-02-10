@@ -1,5 +1,3 @@
-# spark-project notes
-
 Spark Learning Notes
 ========================
 
@@ -207,14 +205,22 @@ O/p:
 (144,12.0,156.0)
 
 
+****************************************
+**************  PairRDD  **************
+***************************************
+> Allows to hold key:value pair.
 
+> Intuition like Java Map : Difference is it allows Duplicate Keys eg:
 
+WARN :  Monday 7th April
+ERROR :  Tuesday 8th April
+FATAL :  Tuesday 8th April
+ERROR :  Wednesday 9th Ma
+WARN :  Friday 10h April
 
-
-
+So, we see we have 2 WARN, 2 ERROR as keys.
 
 4. sc.close();  ==> Close Spark context finally.
-
 
 
 
