@@ -5,9 +5,10 @@ import java.util.List;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.spark_project.guava.collect.Iterables;
 import scala.Tuple2;
 
-public class PairRddDemo {
+public class GroupByKeyDemo {
 
   public static void main(String[] args) {
 
@@ -19,13 +20,12 @@ public class PairRddDemo {
     inputData.add("ERROR: Wednesday 9th Ma");
     inputData.add("WARN: Friday 10h April");
 
-    SparkConf conf = new SparkConf().setAppName("PairRddDemo").setMaster("local[*]");
-    JavaSparkContext sc = new JavaSparkContext(conf);
+    JavaSparkContext sc =  new JavaSparkContext(new SparkConf().setAppName("groupByKeyDemo").setMaster("local[*]"));
+    JavaRDD<String> originalLogRDD = sc.parallelize(inputData);
 
-    JavaRDD<String> originalLogRdd =  sc.parallelize(inputData);
-
-    originalLogRdd.mapToPair(originalLogMsg -> new Tuple2<>(originalLogMsg.split(":")[0],1))
-        .reduceByKey((val1,val2)-> val1+val2)
-        .collect().forEach(System.out::println);
+    originalLogRDD.mapToPair(originalMsg -> new Tuple2<>(originalMsg.split(":")[0],1))
+                  .groupByKey()
+                  .collect()
+                  .forEach(tuple -> System.out.println(tuple._1 + " has "+ Iterables.size(tuple._2) + " messages."));
   }
 }

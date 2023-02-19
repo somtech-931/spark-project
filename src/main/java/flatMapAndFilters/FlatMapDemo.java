@@ -1,13 +1,13 @@
-package pairRdd;
+package flatMapAndFilters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import scala.Tuple2;
 
-public class PairRddDemo {
+public class FlatMapDemo {
 
   public static void main(String[] args) {
 
@@ -19,13 +19,13 @@ public class PairRddDemo {
     inputData.add("ERROR: Wednesday 9th Ma");
     inputData.add("WARN: Friday 10h April");
 
-    SparkConf conf = new SparkConf().setAppName("PairRddDemo").setMaster("local[*]");
+    SparkConf conf = new SparkConf().setAppName("FlatMapDemo").setMaster("local[*]");
     JavaSparkContext sc = new JavaSparkContext(conf);
+    JavaRDD<String> inputRdd = sc.parallelize(inputData);
 
-    JavaRDD<String> originalLogRdd =  sc.parallelize(inputData);
+    /*Requirement: We want to list down all words in the inputData RDD*/
+    JavaRDD<String> wordsRDD = inputRdd.flatMap(line -> Arrays.asList(line.split(" ")).iterator());
+    wordsRDD.collect().forEach(System.out::println);
 
-    originalLogRdd.mapToPair(originalLogMsg -> new Tuple2<>(originalLogMsg.split(":")[0],1))
-        .reduceByKey((val1,val2)-> val1+val2)
-        .collect().forEach(System.out::println);
   }
 }
