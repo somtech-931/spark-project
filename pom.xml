@@ -68,7 +68,7 @@
                     <target>1.8</target>
                     <archive>
                         <manifest>
-                            <mainClass>com.virtualpairprogrammers.Main</mainClass>
+                            <mainClass>KeywordRankingEC2</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
